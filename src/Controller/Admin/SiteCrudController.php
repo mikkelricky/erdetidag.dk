@@ -43,6 +43,7 @@ class SiteCrudController extends AbstractCrudController
     {
         return [
             TextField::new("host"),
+            TextField::new("title"),
             Field::new("messages")->setFormType(MessagesType::class),
         ];
     }

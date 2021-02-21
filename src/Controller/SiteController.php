@@ -20,15 +20,15 @@ class SiteController extends AbstractController
      */
     public function index(
         Request $request,
-        SiteRepository $settingsRepository
+        SiteRepository $siteRepository
     ): Response {
         $host = $request->get("host", $request->getHost());
-        $settings = $settingsRepository->findOneByHost($host);
+        $site = $siteRepository->findOneByHost($host);
         $now = $this->getNow($request);
         $message = "…";
-        if (null !== $settings && $settings->getMessages()) {
+        if (null !== $site && $site->getMessages()) {
             $day = (int) $now->format("N");
-            $message = $settings->getMessages()->getDay($day);
+            $message = $site->getMessages()->getDay($day);
         }
         $nextDay = new DateTimeImmutable(
             $now->format(DateTimeImmutable::ATOM) . " Tomorrow"
@@ -38,6 +38,7 @@ class SiteController extends AbstractController
         return $this->render("settings/index.html.twig", [
             "seconds_until_next_day" => $secondsUntilNextDay,
             "message" => $message,
+            "site" => $site,
         ]);
     }
 

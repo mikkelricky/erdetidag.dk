@@ -55,7 +55,7 @@ class Messages
 
     public function __toString()
     {
-        return implode(", ", array_map([$this, "getDay"], range(1, 7)));
+        return implode(" | ", array_map([$this, "getDay"], range(1, 7)));
     }
 
     public function getMonday(): ?string

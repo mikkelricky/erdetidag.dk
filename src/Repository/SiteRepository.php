@@ -18,10 +18,4 @@ class SiteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Site::class);
     }
-
-    public function findOneByHost(string $host): ?Site
-    {
-        return $this->findOneBy(["host" => $host]) ?:
-            $this->findOneBy(["host" => "*"]);
-    }
 }
