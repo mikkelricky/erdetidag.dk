@@ -8,6 +8,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -24,6 +25,9 @@ class SiteController extends AbstractController
     ): Response {
         $host = $request->get("host", $request->getHost());
         $site = $siteRepository->findOneByHost($host);
+        if (null === $site) {
+            throw new NotFoundHttpException();
+        }
         $now = $this->getNow($request);
         $message = "…";
         if (null !== $site && $site->getMessages()) {
