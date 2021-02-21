@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Day;
-use App\Entity\Settings;
+use App\Entity\Site;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -24,7 +24,7 @@ class DashboardController extends AbstractDashboardController
 
         return $this->redirect(
             $urlGenerator
-                ->setController(SettingsCrudController::class)
+                ->setController(SiteCrudController::class)
                 ->generateUrl()
         );
     }
@@ -36,16 +36,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud(
-            "Settings",
-            "fas fa-calendar",
-            Settings::class
-        );
-        yield MenuItem::linkToUrl(
-            "Show",
-            "fas fa-home",
-            $this->generateUrl("settings_index")
-        );
+        yield MenuItem::linkToCrud("Sites", null, Site::class);
     }
 
     public function configureUserMenu(UserInterface $user): UserMenu

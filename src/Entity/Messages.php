@@ -2,60 +2,60 @@
 
 namespace App\Entity;
 
-use App\Repository\SettingsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use RuntimeException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=SettingsRepository::class)
+ * @ORM\Embeddable()
  */
-class Settings
+class Messages
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $monday;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $tuesday;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $wednesday;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $thursday;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $friday;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $saturday;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $sunday;
 
-    public function getId(): ?int
+    public function __toString()
     {
-        return $this->id;
+        return implode(", ", array_map([$this, "getDay"], range(1, 7)));
     }
 
     public function getMonday(): ?string

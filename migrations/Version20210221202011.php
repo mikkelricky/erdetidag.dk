@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210221163206 extends AbstractMigration
+final class Version20210221202011 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,13 +21,13 @@ final class Version20210221163206 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(
-            "CREATE TABLE settings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, monday VARCHAR(255) NOT NULL, tuesday VARCHAR(255) NOT NULL, wednesday VARCHAR(255) NOT NULL, thursday VARCHAR(255) NOT NULL, friday VARCHAR(255) NOT NULL, saturday VARCHAR(255) NOT NULL, sunday VARCHAR(255) NOT NULL)"
+            "CREATE TABLE site (host VARCHAR(255) NOT NULL, messages_monday VARCHAR(255) NOT NULL, messages_tuesday VARCHAR(255) NOT NULL, messages_wednesday VARCHAR(255) NOT NULL, messages_thursday VARCHAR(255) NOT NULL, messages_friday VARCHAR(255) NOT NULL, messages_saturday VARCHAR(255) NOT NULL, messages_sunday VARCHAR(255) NOT NULL, PRIMARY KEY(host))"
         );
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql("DROP TABLE settings");
+        $this->addSql("DROP TABLE site");
     }
 }

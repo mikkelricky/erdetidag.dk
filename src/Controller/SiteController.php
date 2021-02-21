@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\SettingsRepository;
+use App\Repository\SiteRepository;
 use DateTimeImmutable;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,21 +13,22 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/")
  */
-class SettingsController extends AbstractController
+class SiteController extends AbstractController
 {
     /**
      * @Route("/", name="settings_index", methods={"GET"})
      */
     public function index(
         Request $request,
-        SettingsRepository $settingsRepository
+        SiteRepository $settingsRepository
     ): Response {
+        $host = $request->get("host", $request->getHost());
+        $settings = $settingsRepository->findOneByHost($host);
         $now = $this->getNow($request);
-        $settings = $settingsRepository->findTheOne();
         $message = "…";
-        if (null !== $settings) {
+        if (null !== $settings && $settings->getMessages()) {
             $day = (int) $now->format("N");
-            $message = $settings->getDay($day);
+            $message = $settings->getMessages()->getDay($day);
         }
         $nextDay = new DateTimeImmutable(
             $now->format(DateTimeImmutable::ATOM) . " Tomorrow"
