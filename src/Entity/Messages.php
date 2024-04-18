@@ -2,60 +2,44 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Embeddable()
- */
-class Messages
+#[ORM\Embeddable]
+class Messages implements \Stringable
 {
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $monday;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Assert\NotBlank]
+    private ?string $monday = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $tuesday;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Assert\NotBlank]
+    private ?string $tuesday = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $wednesday;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Assert\NotBlank]
+    private ?string $wednesday = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $thursday;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Assert\NotBlank]
+    private ?string $thursday = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $friday;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Assert\NotBlank]
+    private ?string $friday = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $saturday;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Assert\NotBlank]
+    private ?string $saturday = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $sunday;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Assert\NotBlank]
+    private ?string $sunday = null;
 
-    public function __toString()
+    public function __toString(): string
     {
-        return implode(" | ", array_map([$this, "getDay"], range(1, 7)));
+        return implode(' | ', array_map($this->getDay(...), range(1, 7)));
     }
 
     public function getMonday(): ?string
@@ -142,25 +126,17 @@ class Messages
         return $this;
     }
 
-    public function getDay(int $day)
+    public function getDay(int $day): ?string
     {
-        switch ($day) {
-            case 1:
-                return $this->getMonday();
-            case 2:
-                return $this->getTuesday();
-            case 3:
-                return $this->getWednesday();
-            case 4:
-                return $this->getThursday();
-            case 5:
-                return $this->getFriday();
-            case 6:
-                return $this->getSaturday();
-            case 7:
-                return $this->getSunday();
-        }
-
-        throw new RuntimeException(sprintf("Invalid day: %d", $day));
+        return match ($day) {
+            1 => $this->getMonday(),
+            2 => $this->getTuesday(),
+            3 => $this->getWednesday(),
+            4 => $this->getThursday(),
+            5 => $this->getFriday(),
+            6 => $this->getSaturday(),
+            7 => $this->getSunday(),
+            default => throw new \RuntimeException(sprintf('Invalid day: %d', $day)),
+        };
     }
 }

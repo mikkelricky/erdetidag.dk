@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Day;
 use App\Entity\Site;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -15,12 +14,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
-    /**
-     * @Route("/admin", name="admin")
-     */
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
+    {
+    }
+
+    #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        $urlGenerator = $this->get(AdminUrlGenerator::class);
+        $urlGenerator = $this->adminUrlGenerator;
 
         return $this->redirect(
             $urlGenerator
@@ -31,12 +32,12 @@ class DashboardController extends AbstractDashboardController
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()->setTitle($this->getParameter("site_title"));
+        return Dashboard::new()->setTitle($this->getParameter('site_title'));
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud("Sites", null, Site::class);
+        yield MenuItem::linkToCrud('Sites', null, Site::class);
     }
 
     public function configureUserMenu(UserInterface $user): UserMenu

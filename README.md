@@ -1,36 +1,45 @@
 # Er det … i dag?
 
-```sh
+```shell
 git clone https://github.com/rimi-itk/erdetidag.dk
 cd erdetidag.dk
 ```
 
 Edit `.env.local` and set these required parameters:
 
-```sh
+```shell
+DATABASE_URL=''
 SITE_URL=''
 SITE_TITLE=''
-# Run `bin/console security:encode-password` to encode an admin password.
+
+# Run `bin/console security:hash-password` to hash a password
 ADMIN_PASSWORD=''
 ```
 
-```sh
+```shell
 composer install --no-dev --classmap-authoritative
 bin/console doctrine:migrations:migrate --no-interaction
 ```
 
 Finalize install by setting a real admin password (`ADMIN_PASSWORD` in `.env.local`) and running:
 
-```sh
+```shell
 composer dump-env prod
 ```
 
 ## Development
 
+``` dotenv
+# .env.local
+APP_ENV=dev
+```
+
+``` shell
+task dev:start
+```
+
 ### Coding standards
 
-```sh
-yarn install
-yarn coding-standards-check
-yarn coding-standards-apply
+```shell
+task dev:coding-standards:check
 ```

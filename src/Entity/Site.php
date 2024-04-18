@@ -3,36 +3,29 @@
 namespace App\Entity;
 
 use App\Repository\SiteRepository;
-use App\Validator\Host;
-use App\Validator\ValidHost;
+use App\Validator as AppAssert;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=SiteRepository::class)
- * @UniqueEntity(fields={"host"})
- */
+#[ORM\Entity(repositoryClass: SiteRepository::class)]
+#[ORM\Table(name: 'erdetidag_site')]
+#[UniqueEntity(fields: ['host'])]
 class Site
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=255)
-     * @ValidHost()
-     */
-    private $host;
+    #[ORM\Id]
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[AppAssert\ValidHost()]
+    private ?string $host = null;
 
-    /**
-     * @ORM\Embedded(class="Messages")
-     * @Assert\Valid()
-     */
-    private $messages;
+    #[ORM\Embedded(class: Messages::class)]
+    #[Assert\Valid]
+    private ?Messages $messages;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $title;
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Assert\NotBlank]
+    private ?string $title = null;
 
     public function getHost(): ?string
     {

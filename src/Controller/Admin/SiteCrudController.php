@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\Site;
 use App\Form\MessagesType;
-use App\Repository\SiteRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -21,30 +20,36 @@ class SiteCrudController extends AbstractCrudController
         return Site::class;
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined();
+    }
+
     public function configureActions(Actions $actions): Actions
     {
-        return $actions->add(
-            Crud::PAGE_INDEX,
-            Action::new("show")->linkToCrudAction("show")
-        );
+        return $actions
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
+            ->add(
+                Crud::PAGE_INDEX,
+                Action::new('show')->linkToCrudAction('show')
+            );
     }
 
     public function show(AdminContext $context): Response
     {
-        /** @var Site $settings */
-        $settings = $context->getEntity()->getInstance();
+        /** @var Site $site */
+        $site = $context->getEntity()->getInstance();
 
-        return $this->redirectToRoute("settings_index", [
-            "host" => $settings->getHost(),
+        return $this->redirectToRoute('site_index', [
+            'host' => $site->getHost(),
         ]);
     }
 
     public function configureFields(string $pageName): iterable
     {
-        return [
-            TextField::new("host"),
-            TextField::new("title"),
-            Field::new("messages")->setFormType(MessagesType::class),
-        ];
+        yield TextField::new('host');
+        yield TextField::new('title');
+        yield Field::new('messages')->setFormType(MessagesType::class);
     }
 }

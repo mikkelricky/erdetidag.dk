@@ -4,14 +4,8 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ValidHost extends Constraint
 {
-    /*
-     * Any public properties become valid options for the annotation.
-     * Then, use these in your validator class.
-     */
-    public $message = 'The value "{{ value }}" is not a valid host.';
+    public string $message = 'The value "{{ value }}" is not a valid host.';
 }
