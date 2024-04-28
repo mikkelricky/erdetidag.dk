@@ -1,7 +1,7 @@
 # Er det … i dag?
 
 ```shell
-git clone https://github.com/rimi-itk/erdetidag.dk
+git clone https://github.com/mikkelricky/erdetidag.dk
 cd erdetidag.dk
 ```
 
